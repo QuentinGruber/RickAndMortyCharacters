@@ -17,15 +17,40 @@ namespace RickAndMortyCharacters.Controllers
             _logger = logger;
         }
 
-        public async Task<ActionResult> Index()
+        private async Task<bool> fetchAllCharacters(HttpClient client)
         {
-            var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("https://rickandmortyapi.com/api/character");
+            RMApiResponse characterPage = await fetchCharacterPage(client, "https://rickandmortyapi.com/api/character");
+            var Characters = characterPage.results;
+            do
+            {
+                characterPage = await fetchCharacterPage(client, characterPage.info.next);
+                Characters.AddRange(characterPage.results);
+            }
+            while (characterPage.info.next != null);
+            ViewBag.Characters = Characters;
+            return true;
+        }
+
+        private async Task<RMApiResponse> fetchCharacterPage(HttpClient client, string url)
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
             RMApiResponse responseDeserialized = JsonConvert.DeserializeObject<RMApiResponse>(
                 await response.Content.ReadAsStringAsync()
                 );
-            ViewBag.Characters = responseDeserialized.results;
-            return View();
+            return responseDeserialized;
+        }
+        public async Task<ActionResult> Index()
+        {
+            var client = new HttpClient();
+            if (await fetchAllCharacters(client))
+            {
+                return View();
+            }
+            else
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+
         }
 
         public IActionResult Privacy()

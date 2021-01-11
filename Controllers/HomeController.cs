@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RickAndMortyCharacters.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -25,9 +22,8 @@ namespace RickAndMortyCharacters.Controllers
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync("https://rickandmortyapi.com/api/character");
             RMApiResponse responseDeserialized = JsonConvert.DeserializeObject<RMApiResponse>(
-                await response.Content.ReadAsStringAsync());
-            //Console.WriteLine(await response.Content.ReadAsStringAsync());
-            // Console.WriteLine(responseDeserialized.results);
+                await response.Content.ReadAsStringAsync()
+                );
             ViewBag.Characters = responseDeserialized.results;
             return View();
         }

@@ -3,10 +3,26 @@
     List<Result> Characters = ViewBag.Characters;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div class="character-list">
     @foreach (Result character in Characters)
     {
-        <div>@character.id.ToString()</div>
+        <div class="character">
+            <h3>@character.name</h3>
+            <h4>@character.species</h4>
+            <h5>@character.location.name</h5>
+            <img src="@character.image">
+        </div>
     }
 </div>
+
+<style>
+    .character-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .character {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+</style>

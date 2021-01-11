@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace RickAndMortyCharacters.Controllers
 {
@@ -18,8 +20,15 @@ namespace RickAndMortyCharacters.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            var client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("https://rickandmortyapi.com/api/character");
+            RMApiResponse responseDeserialized = JsonConvert.DeserializeObject<RMApiResponse>(
+                await response.Content.ReadAsStringAsync());
+            //Console.WriteLine(await response.Content.ReadAsStringAsync());
+            // Console.WriteLine(responseDeserialized.results);
+            ViewBag.Characters = responseDeserialized.results;
             return View();
         }
 

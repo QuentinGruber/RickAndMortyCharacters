@@ -1,27 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    List<Result> Characters = ViewBag.Characters;
 }
 
-<div class="character-list">
-    @foreach (Result character in Characters)
-    {
-        <div class="character">
-            <h3>@character.name</h3>
-            <h4>@character.species</h4>
-            <h5>@character.location.name</h5>
-            <img src="@character.image">
-        </div>
-    }
+<div class="category-list">
+    <div class="category">
+        <h2>
+            Characters
+        </h2>
+        <img onclick="location.href='/Home/AllCharacter'" src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"/>
+    </div>
+    <div class="category">
+        <h2>
+            Locations
+        </h2>
+        <img onclick="location.href='/Home/AllLocation'" src="https://rickandmortyapi.com/api/character/avatar/99.jpeg"/>
+    </div>
 </div>
 
 <style>
-    .character-list {
+    .category-list {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
 
-    .character {
+    .category {
         text-align: center;
         margin-bottom: 50px;
     }

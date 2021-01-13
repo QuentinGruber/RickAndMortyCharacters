@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Dimensions";
+    List<LocationFull> Locations = ViewBag.Locations;
+}
+
+<div class="character-list">
+    @foreach (LocationFull Location in Locations)
+    {
+        <div class="character">
+            <h3>@Location.name</h3>
+            <h4>@Location.type</h4>
+            <h5>@Location.dimension</h5>
+        </div>
+    }
+</div>
+
+<style>
+    .character-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .character {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+</style>

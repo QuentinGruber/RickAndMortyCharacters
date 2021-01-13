@@ -39,7 +39,7 @@ namespace RickAndMortyCharacters.Controllers
                 );
             return responseDeserialized;
         }
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> AllCharacter()
         {
             var client = new HttpClient();
             if (await fetchAllCharacters(client))
@@ -53,7 +53,43 @@ namespace RickAndMortyCharacters.Controllers
 
         }
 
-        public IActionResult Privacy()
+        private async Task<bool> fetchAllLocations(HttpClient client)
+        {
+            RootLocationRequest locationPage = await fetchLocationPage(client, "https://rickandmortyapi.com/api/location");
+            var Locations = locationPage.results;
+            do
+            {
+                locationPage = await fetchLocationPage(client, locationPage.info.next);
+                Locations.AddRange(locationPage.results);
+            }
+            while (locationPage.info.next != null);
+            ViewBag.Locations = Locations;
+            return true;
+        }
+
+        private async Task<RootLocationRequest> fetchLocationPage(HttpClient client, string url)
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+            RootLocationRequest responseDeserialized = JsonConvert.DeserializeObject<RootLocationRequest>(
+                await response.Content.ReadAsStringAsync()
+            );
+            return responseDeserialized;
+        }
+
+        public async Task<ActionResult> AllLocation()
+        {
+            var client = new HttpClient();
+            if (await fetchAllLocations(client))
+            {
+                return View();
+            }
+            else
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+        }
+
+        public IActionResult Index()
         {
             return View();
         }

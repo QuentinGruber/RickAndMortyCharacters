@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Characters";
+    List<Character> Characters = ViewBag.Characters;
+}
+
+<div class="character-list">
+    @foreach (Character character in Characters)
+    {
+        if(character.status == "Alive")
+        {
+            <div class="character alive">
+                <h3>@character.name</h3>
+                <h4>@character.species</h4>
+                <h5>@character.location.name</h5>
+                <img src="@character.image">
+            </div>
+        }
+        else if (character.status == "Dead")
+        {
+        <div class="character dead">
+        <h3>@character.name</h3>
+        <h4>@character.species</h4>
+        <h5>@character.location.name</h5>
+        <img src="@character.image">
+        </div>
+        }
+        else
+        {
+            <div class="character">
+                <h3>@character.name</h3>
+                <h4>@character.species</h4>
+                <h5>@character.location.name</h5>
+                <img src="@character.image">
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .character-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .character {
+        text-align: center;
+        margin-bottom: 50px;
+        border: solid 0.3em;
+    }
+
+    .alive {
+        border-color: green;
+    }
+
+    .dead {
+        border-color: red;
+    }
+</style>

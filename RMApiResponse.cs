@@ -26,7 +26,7 @@ namespace RickAndMortyCharacters
         public string url { get; set; }
     }
 
-    public class Result
+    public class Character
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -45,6 +45,23 @@ namespace RickAndMortyCharacters
     public class RMApiResponse
     {
         public Info info { get; set; }
-        public List<Result> results { get; set; }
+        public List<Character> results { get; set; }
+    }
+
+    public class LocationFull
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+        public string dimension { get; set; }
+        public List<string> residents { get; set; }
+        public string url { get; set; }
+        public DateTime created { get; set; }
+    }
+
+    public class RootLocationRequest
+    {
+        public Info info { get; set; }
+        public List<LocationFull> results { get; set; }
     }
 }
